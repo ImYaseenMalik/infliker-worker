@@ -4,14 +4,17 @@ export default {
     const url = new URL(request.url);
 
     // ---------- ROUTES ----------
-    if (url.pathname === "/api/posts") {
-      if (request.method === "GET") {
-        return await getPosts(env);
-      }
-      if (request.method === "POST") {
-        return await createPost(request, env);
-      }
-    }
+    if (pathname === "/api/posts" && request.method === "GET") {
+    const { results } = await env.POSTS_DB.prepare(
+        "SELECT id, title, slug, created_at FROM posts ORDER BY created_at DESC"
+    ).all();
+
+    return Response.json({
+        success: true,
+        items: results || []
+    });
+}
+
 
     if (url.pathname.startsWith("/api/images/upload")) {
       return await uploadImage(request, env);
