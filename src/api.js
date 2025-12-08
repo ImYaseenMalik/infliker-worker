@@ -186,3 +186,16 @@ handleAPI.post('/settings', async (c) => {
   
   return c.json({ success: true })
 })
+handleAPI.post('/upload', async (c) => {
+  const formData = await c.req.formData()
+  const file = formData.get('file')
+  
+  // Store in Cloudflare R2 (you need to set this up)
+  // const r2 = c.env.MY_BUCKET
+  // await r2.put(file.name, file)
+  
+  return c.json({ 
+    url: `https://your-r2-domain/${file.name}`,
+    success: true 
+  })
+})
