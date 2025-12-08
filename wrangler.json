@@ -1,20 +1,5 @@
 {
-  "name": "cloudflare-cms-worker",
-  "main": "src/index.js",
-  "compatibility_date": "2025-12-07",
-  "d1_databases": {
-    "POSTS_DB": {
-      "binding": "POSTS_DB",
-      "database_name": "posts-db"
-    }
-  },
-  "r2_buckets": [
-    {
-      "binding": "MEDIA_R2",
-      "bucket_name": "media-bucket"
-    }
-  ],
-  "vars": {
-    "ADMIN_API_KEY": "CHANGE_THIS_SECRET"
-  }
+  "name": "cms-worker",
+  "main": "index.js",
+  "compatibility_date": "2024-01-01"
 }
