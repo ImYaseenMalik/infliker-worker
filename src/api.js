@@ -2,6 +2,58 @@ import { Hono } from 'hono'
 
 export const handleAPI = new Hono()
 
+// Login endpoint
+handleAPI.post('/login', async (c) => {
+  try {
+    const { username, password } = await c.req.json()
+    
+    // Get user from database
+    const user = await c.db.prepare(
+      'SELECT * FROM users WHERE username = ?'
+    ).bind(username).first()
+    
+    if (!user) {
+      return c.json({ success: false, message: 'Invalid credentials' }, 401)
+    }
+    
+    // Simple password check (use bcrypt in production)
+    const hashedInput = await hashPassword(password)
+    
+    if (hashedInput === user.password_hash) {
+      // Create session (simplified - use proper sessions in production)
+      const sessionToken = crypto.randomUUID()
+      
+      // Set session cookie
+      c.header('Set-Cookie', `session=${sessionToken}; Path=/; HttpOnly; Max-Age=86400`)
+      
+      return c.json({ 
+        success: true, 
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          role: user.role
+        }
+      })
+    } else {
+      return c.json({ success: false, message: 'Invalid credentials' }, 401)
+    }
+  } catch (error) {
+    console.error('Login error:', error)
+    return c.json({ success: false, message: 'Server error' }, 500)
+  }
+})
+
+// Add hashPassword function
+async function hashPassword(password) {
+  const encoder = new TextEncoder()
+  const data = encoder.encode(password)
+  const hash = await crypto.subtle.digest('SHA-256', data)
+  return Array.from(new Uint8Array(hash))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('')
+}
+
 // Get dashboard stats
 handleAPI.get('/stats', async (c) => {
   const db = c.db
