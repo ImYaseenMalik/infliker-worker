@@ -1,7 +1,6 @@
 name = "infliker-cms"
 main = "src/index.js"
 compatibility_date = "2024-12-01"
-compatibility_flags = ["nodejs_compat"]
 
 [vars]
 ENVIRONMENT = "production"
