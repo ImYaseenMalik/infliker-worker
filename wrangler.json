@@ -1,5 +1,24 @@
 {
   "name": "infliker-worker",
   "main": "index.js",
-  "compatibility_date": "2024-01-01"
+  "compatibility_date": "2024-01-01",
+
+  "vars": {
+    "ADMIN_API_KEY": "env:iNFLIKER_2025_SUPER_ADMIN_9F7A2A7B"
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "posts-db",
+      "database_id": "329a6ac7-2670-4e32-9f4e-bcaf89bf2e2b"
+    }
+  ],
+
+  "r2_buckets": [
+    {
+      "binding": "MEDIA_BUCKET",
+      "bucket_name": "media-r2"
+    }
+  ]
 }
